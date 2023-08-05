@@ -1,0 +1,28 @@
+/* ::ng-deep {
+    .app-root {
+        .ant-layout {
+            height: 100%;
+        }
+    }   
+}
+
+nz-content {
+    background: rgba(16, 142, 233, 1);
+    color: #fff;
+    min-height: 120px;
+    line-height: 120px;
+  } */
+
+
+.main {
+    height: 100%;
+    
+    .header {
+        height: 48px;
+        display: flex;
+    }
+
+    .content {
+        height: calc(100% - 48px);
+    }
+}
