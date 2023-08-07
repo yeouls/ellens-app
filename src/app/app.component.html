@@ -1,33 +1,14 @@
 <div class="main">
     <div class="header">
-        <nz-upload [nzAccept]="acceptedFileFormats" [nzShowUploadList]="false"  (nzChange)="addFileList($event, 'MAIN')">
-            <button nz-button>
-                <span nz-icon nzType="upload"></span>
-                메인 파일 업로드
-            </button>
-        </nz-upload>
-        <nz-upload nzMultiple 
-        [nzAccept]="acceptedFileFormats" 
-        [nzShowUploadList]="false" 
-        (nzChange)="addFileList($event, 'TEACHER')"
-        >
-            <button nz-button>
-                <span nz-icon nzType="upload"></span>
-                선생님 파일 업로드
-            </button>
-        </nz-upload>
-        <nz-upload nzMultiple [nzAccept]="acceptedFileFormats" [nzShowUploadList]="false">
-            <button nz-button>
-                <span nz-icon nzType="upload"></span>
-                학생 파일 업로드
-            </button>
-        </nz-upload>
-        <button nz-button (click)="changeEvent()">생성</button>
+        <span style="padding: 5px;">생성할 모듈</span>
+        <input nz-input placeholder="small size" nzSize="small" [(ngModel)]="current_module" />
+        <button nz-button nzType="primary" (click)="createModal()">파일 업로드</button>
+        <button nz-button (click)="changeEvent()" [disabled]="!disableCreate()">데이터 생성</button>
+        <button nz-button (click)="exportexcel()" [disabled]="rowData.length == 0">Export to Excel</button>
     </div>
     <div class="content">
         <ag-grid-angular style="width: 100%; height: 100%" class="ag-theme-alpine" [columnDefs]="columnDefs"
-            [defaultColDef]="defaultColDef" [rowData]="rowData" [rowSelection]="'multiple'" [animateRows]="true"
-            (gridReady)="onGridReady($event)">
+            [defaultColDef]="defaultColDef" [rowData]="rowData" [rowSelection]="'multiple'" [animateRows]="true">
         </ag-grid-angular>
     </div>
 </div>

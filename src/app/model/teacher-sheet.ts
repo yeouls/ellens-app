@@ -1,14 +1,14 @@
 import { BaseInfo } from "./common-info";
 
 export enum TeacherSheetName {
-    '출석 기록',
-    '혜화랩 교과',
-    '체육',
-    '마케팅랩',
-    '코딩랩',
-    '주제중심',
-    '개인주제',
-    '문제정의'
+    '출석 기록' = '출석 기록',
+    '혜화랩 교과' = '혜화랩 교과' ,
+    '체육' = '체육',
+    '마케팅랩' = '마케팅랩',
+    '코딩랩' ='코딩랩',
+    '주제중심' = '주제중심',
+    '개인주제' = '개인주제',
+    '문제정의' = '문제정의'
 }
 
 export interface AttendanceSheet extends BaseInfo{

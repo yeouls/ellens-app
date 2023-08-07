@@ -1,0 +1,104 @@
+<div class="app-upload">
+    <nz-collapse>
+        <nz-collapse-panel nzHeader="파일 업로드 전 해야할일" class="color: red;" [nzActive]="infoActive">
+            <ol>
+                <li>모든 엑셀파일의 1행은 column 값 이어야 한다.</li>
+                <li>재학생 명단 파일에 휴학한 학생은 '코칭교사' 부분에 '휴학' 이라고 입력해준다.</li>
+                <li>교사 파일명 앞에 '[숫자]' 형식으로 01부터 숫자를 입력해준다.</li>
+                <ul>
+                    <li>순서 : 도령,라라,몰라,수선,예티,은열,쩜백,히치</li>
+                    <li>예시 : [01]#2023 M2_학생성장기록부 작성_도령</li>
+                </ul>
+                <li>학생 파일안에 header 값을 바꿔준다</li>
+                <ul>
+                    <li>응답하시는 분의 본명은 무엇인가요? -> 이름</li>
+                    <li>응답하시는 분의 닉네임은 무엇인가요? -> 닉네임</li>
+                    <li>[개인주제] 자신의 개인주제프로젝트에 대해 ... -> 개인개요</li>
+                    <li>[개인주제] 프로젝트를 통해 새롭게 알게된 점과 ... -> 개인학생</li>
+                    <li>[문제정의] 팀의 프로젝트 내용에 대해 간략히 ... -> 문제개요</li>
+                    <li>[문제정의] 프로젝트를 통해 새롭게 알게된 점과 ... -> 문제학생</li>
+                    <li>[알파랩] 수업을 통해 새롭게 알게된 점과 ...(마케팅랩) -> 알파랩학생1</li>
+                    <li>[알파랩] 수업을 통해 새롭게 알게된 점과 ...(코딩랩) -> 알파랩학생2</li>
+                    <li>혜화랩 파일에서는 선생님 부분은 선생님 이름만 써줌</li>
+                    <ul>
+                        <li>
+                            예시 : [국어-수선] 수업을 통해 새롭게 알게된 점과 ... -> 수선
+                        </li>
+                    </ul>
+                    <li>혜화랩 파일에서는 주제중심은 아래와 같이</li>
+                    <ul>
+                        <li>[주제중심] 자신의 개인주제프로젝트에 대해 ... -> 주재개요</li>
+                        <li>[주제중심] 프로젝트를 통해 새롭게 알게된 점과 ... -> 주제학생</li>
+                    </ul>
+                </ul>
+            </ol>
+        </nz-collapse-panel>
+        <nz-collapse-panel nzHeader="재학생 명단 파일" [nzActive]="mainActive" [nzExtra]="mainUpload">
+            <div class="item-list" *ngFor="let file of mainFileList">
+                <div nz-row class="item">
+                    <div nz-col nzFlex="16">
+                        <span nz-icon nzType="paper-clip" nzTheme="outline"></span>
+                        <span nz-typography class="file-name" nzType="secondary">{{file.name}}</span>
+                    </div>
+                    <div nz-col nzFlex="1" class="area">
+                        <span nz-icon nzType="delete" nzTheme="outline" (click)="removeFile(file, 'MAIN')"></span>
+                    </div>
+                </div>
+            </div>
+        </nz-collapse-panel>
+        <nz-collapse-panel nzHeader="선생님 파일" [nzActive]="teacherActive" [nzExtra]="teacherUpload">
+            <div class="item-list" *ngFor="let file of teacherFileList">
+                <div nz-row class="item">
+                    <div nz-col nzFlex="16">
+                        <span nz-icon nzType="paper-clip" nzTheme="outline"></span>
+                        <span nz-typography class="file-name" nzType="secondary">{{file.name}}</span>
+                    </div>
+                    <div nz-col nzFlex="1" class="area">
+                        <span nz-icon nzType="delete" nzTheme="outline" (click)="removeFile(file, 'TEACHER')"></span>
+                    </div>
+                </div>
+            </div>
+        </nz-collapse-panel>
+        <nz-collapse-panel nzHeader="학생 파일" [nzActive]="studentActive" [nzExtra]="studentUpload">
+            <div class="item-list" *ngFor="let file of studentFileList">
+                <div nz-row class="item">
+                    <div nz-col nzFlex="16">
+                        <span nz-icon nzType="paper-clip" nzTheme="outline"></span>
+                        <span nz-typography class="file-name" nzType="secondary">{{file.name}}</span>
+                    </div>
+                    <div nz-col nzFlex="1" class="area">
+                        <span nz-icon nzType="delete" nzTheme="outline" (click)="removeFile(file, 'STUDENT')"></span>
+                    </div>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <ng-template #mainUpload>
+        <nz-upload [nzAccept]="acceptedFileFormats" [nzShowUploadList]="false" [nzMultiple]="false"
+            (nzChange)="addFileList($event, 'MAIN')">
+            <button nz-button>
+                <span nz-icon nzType="upload"></span>
+            </button>
+        </nz-upload>
+    </ng-template>
+
+    <ng-template #teacherUpload>
+        <nz-upload [nzAccept]="acceptedFileFormats" [nzShowUploadList]="false" [nzMultiple]="true"
+            (nzChange)="addFileList($event, 'TEACHER')">
+            <button nz-button>
+                <span nz-icon nzType="upload"></span>
+            </button>
+        </nz-upload>
+    </ng-template>
+
+    <ng-template #studentUpload>
+        <nz-upload [nzAccept]="acceptedFileFormats" [nzShowUploadList]="false" [nzMultiple]="true"
+            (nzChange)="addFileList($event, 'STUDENT')">
+            <button nz-button>
+                <span nz-icon nzType="upload"></span>
+            </button>
+        </nz-upload>
+    </ng-template>
+
+</div>
