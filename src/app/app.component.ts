@@ -123,11 +123,14 @@ export class AppComponent implements OnInit{
         if (this.teacherSheetNames.includes(name)) {
           const roa = XLSX.utils.sheet_to_json(workbook.Sheets[name], {});
           if (roa.length > 0) {
-            let data: any[] = roa.filter((x: any) => Object.keys(x).length > 6);
+            let data: any[] = [];
             if (name.includes('혜화')) {
+              data = roa.filter((x: any) => x['교과 교사 측정'] != null);
               data = data.map(x => {
                 return {...x, '작성교사' : fileName };
               })
+            } else {
+              data = roa.filter((x: any) => Object.keys(x).length > 6);
             }
             
             console.log(fileName, name, data);
@@ -138,7 +141,7 @@ export class AppComponent implements OnInit{
         if (name.includes(this.current_module)) {
           const roa = XLSX.utils.sheet_to_json(workbook.Sheets[name], {});
           if (roa.length > 0) {
-            this.mainData = roa.filter((x: any) => x['코칭 교사'] != '휴학');
+            this.mainData = roa.filter((x: any) => !x['코칭 교사'].includes('휴학'));
           }
         }
       } else if (type == 'STUDENT') {
@@ -156,15 +159,15 @@ export class AppComponent implements OnInit{
     for (let index = 0; index < this.mainData.length; index++) {
       const element = this.mainData[index];
       const data: any = {};
-      const name = element['이름'];
-      const nickname = element['닉네임'];
+      const name = element['이름'].replace('\b','');
+      const nickname = element['닉네임'].replace('\b','');
       data['NO'] = index +1;
       data['입학 구분'] = element['입학 구분'];
       data['이름'] = name;
       data['닉네임'] = nickname;
-      data['코칭 교사'] = element['코칭 교사'];
-      data['오전교육과정'] = element['오전'];
-      data['오후교육과정'] = element['오후'];
+      data['코칭 교사'] = element['코칭 교사'].replace('\b','');
+      data['오전교육과정'] = element['오전'].replace('\b','');
+      data['오후교육과정'] = element['오후'].replace('\b','');
 
       //teacher
       for (let j = 0; j < this.teacherSheetNames.length; j++) {
@@ -229,18 +232,18 @@ export class AppComponent implements OnInit{
             const sheet3: RabSheet[] = this.teacherData[sheetName];
             const sheet3Data = sheet3.filter(x => x['닉네임'] == nickname && x['이름'] == name).shift();
             if(sheet3Data) {
-              data['1랩개요'] = sheet3Data['교과 수업 개요'];
-              data['1랩교사'] = sheet3Data['교과 교사 측정'];
-              data['2랩이수'] = sheet3Data['이수여부'];
+              data['마케팅랩개요'] = sheet3Data['교과 수업 개요'];
+              data['마케팅랩교사'] = sheet3Data['교과 교사 측정'];
+              data['마케팅랩이수'] = sheet3Data['이수여부'];
             }
             break;
           case TeacherSheetName['코딩랩']:
             const sheet4: RabSheet[] = this.teacherData[sheetName];
             const sheet4Data = sheet4.filter(x => x['닉네임'] == nickname && x['이름'] == name).shift();
             if(sheet4Data) {
-              data['2랩개요'] = sheet4Data['교과 수업 개요'];
-              data['2랩교사'] = sheet4Data['교과 교사 측정'];
-              data['2랩이수'] = sheet4Data['이수여부'];
+              data['코딩랩개요'] = sheet4Data['교과 수업 개요'];
+              data['코딩랩교사'] = sheet4Data['교과 교사 측정'];
+              data['코딩랩이수'] = sheet4Data['이수여부'];
             }
             break;
           case TeacherSheetName['체육']:
@@ -271,7 +274,7 @@ export class AppComponent implements OnInit{
             const sheet8: ProblemSheet[] = this.teacherData[sheetName];
             const sheet8Data = sheet8.filter(x => x['닉네임'] == nickname && x['이름'] == name).shift();
             if(sheet8Data) {
-              data['자율이수'] = sheet8Data['이수여부'];
+              data['문제정의이수'] = sheet8Data['이수여부'];
               data['문제교사'] = sheet8Data['교사 측정'];
             }
             break;
@@ -302,9 +305,9 @@ export class AppComponent implements OnInit{
           const sheet1Data = sheet1.filter(x => x['닉네임'] == nickname && x['이름'] == name).shift();
           if(sheet1Data) {
             if(sheet1Data['알파랩'] == '마케팅랩') {
-              data['1랩학생'] = sheet1Data['알파랩학생1'];
+              data['마케팅랩학생'] = sheet1Data['알파랩학생1'];
             } else {
-              data['2랩학생'] = sheet1Data['알파랩학생2'];
+              data['코딩랩학생'] = sheet1Data['알파랩학생2'];
             }
           }
         } else {
