@@ -5,11 +5,12 @@ import { Injectable } from "@angular/core";
 })
 export class DefaultData {
     studentResponseOrder: string[] = ['혜화', '알파', '개인', '문제'];
-    teacherFileOrder: string[] = ['도령', '라라', '몰라', '수선', '예티', '은열', '쩜백', '히치'];
+    teacherFileOrder: string[] = ['도령', '라라', '몰라', '수선', '예티', '은열', '쩜백', '히치', '단테'];
     columns: string[] = [
         'NO',
         '입학 구분',
         '이름',
+        '닉네임',
         '코칭 교사',
         '오전교육과정',
         '오후교육과정',
