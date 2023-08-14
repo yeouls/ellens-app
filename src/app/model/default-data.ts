@@ -6,11 +6,29 @@ import { Injectable } from "@angular/core";
 export class DefaultData {
     studentResponseOrder: string[] = ['혜화', '알파', '개인', '문제'];
     teacherFileOrder: string[] = ['도령', '라라', '몰라', '수선', '예티', '은열', '쩜백', '히치', '단테'];
-    columns: string[] = [
+    keyColumns: string[] = [
         'NO',
         '입학 구분',
         '이름',
         '닉네임',
+        '마케팅랩이수',
+        '코딩랩이수',
+        'V.lab이수',
+        'M.lab이수',
+        '마케팅랩개요',
+        '마케팅랩학생',
+        '마케팅랩교사',
+        'V.lab개요',
+        'V.lab학생',
+        'V.lab교사',
+        'M.lab개요',
+        'M.lab학생',
+        'M.lab교사',
+        '코딩랩개요',
+        '코딩랩학생',
+        '코딩랩교사',
+    ];
+    columns: string[] = [
         '코칭 교사',
         '오전교육과정',
         '오후교육과정',
@@ -21,8 +39,6 @@ export class DefaultData {
         '역사이수',
         '과학이수',
         '주제이수',
-        '마케팅랩이수',
-        '코딩랩이수',
         '문제정의이수',
         '체육이수',
         '개인주제이수',
@@ -61,12 +77,6 @@ export class DefaultData {
         '주제개요',
         '주제학생',
         '주제교사',
-        '마케팅랩개요',
-        '마케팅랩학생',
-        '마케팅랩교사',
-        '코딩랩개요',
-        '코딩랩학생',
-        '코딩랩교사',
         '체육개요',
         '체육학생',
         '체육교사',

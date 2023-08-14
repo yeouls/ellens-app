@@ -43,7 +43,7 @@ export class UploadFileComponent implements AfterViewInit {
         this.mainActive = this.mainFileList.length > 0;
       } else if (type == 'TEACHER') {
         file.status = 'done';
-        if(this.teacherFileList.length < this.defaultData.teacherFileOrder.length) {
+        if(this.teacherFileList.length < this.defaultData.teacherFileOrder.length *2) {
           this.teacherFileList.push(file);
         } else {
           this.message.error('파일을 추가할수 없습니다');
@@ -51,7 +51,7 @@ export class UploadFileComponent implements AfterViewInit {
         this.teacherActive = this.teacherFileList.length > 0;     
       } else if (type == 'STUDENT') {
         file.status = 'done';
-        if(this.studentFileList.length < this.defaultData.studentResponseOrder.length) {
+        if(this.studentFileList.length < this.defaultData.studentResponseOrder.length *2) {
           this.studentFileList.push(file);
         } else {
           this.message.error('파일을 추가할수 없습니다');

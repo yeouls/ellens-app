@@ -6,6 +6,8 @@ export enum TeacherSheetName {
     '체육' = '체육',
     '마케팅랩' = '마케팅랩',
     '코딩랩' ='코딩랩',
+    'V.lab' = 'V.lab',
+    'M.lab' = 'M.lab',
     '주제중심' = '주제중심',
     '개인주제' = '개인주제',
     '문제정의' = '문제정의'
@@ -20,6 +22,7 @@ export interface AttendanceSheet extends BaseInfo{
     '병결': number,
     '병지각': number,
     '병조퇴': number,
+    moduleIndex: number
 }
 
 export interface RabSheet extends BaseInfo{
@@ -32,11 +35,13 @@ export interface RabSheet extends BaseInfo{
     '교과 수업 개요': string,
     '교과 교사 측정': string,
     '이수여부': string,
+    moduleIndex: number
 }
 
 export interface GymSheet extends BaseInfo{
     '체육 수업 개요': string,
     '이수여부': string,
+    moduleIndex: number
 }
 
 export interface SubjectSheet extends BaseInfo{
@@ -51,6 +56,7 @@ export interface SubjectSheet extends BaseInfo{
     '태도2': number,
     '교사 총평': string,
     '이수여부': string,
+    moduleIndex: number
 }
 
 export interface PersonalSheet extends BaseInfo{
@@ -64,6 +70,7 @@ export interface PersonalSheet extends BaseInfo{
     '태도2': number,
     '개인주제 교사 측정': string,
     '이수여부': string,
+    moduleIndex: number
 }
 
 export interface ProblemSheet extends BaseInfo{
@@ -77,6 +84,7 @@ export interface ProblemSheet extends BaseInfo{
     '태도2': number,
     '교사 측정': string,
     '이수여부': string,
+    moduleIndex: number
 }
 
 
