@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   private gridApi!: GridApi;
 
   moduleList: string[] = [];
-  current_module: string = '2023_M1,2023_M2';
+  current_module: string = '2023_M3,2023_M4';
   columns: string[] = []
   columnDefs: ColDef[] = [];
 
@@ -110,7 +110,7 @@ export class AppComponent implements OnInit {
 
   uploadFileList() {
     this.moduleList = this.current_module.split(',');
-    this.setDefault();
+    // this.setDefault();
 
     this.mainfileList.forEach(f => this.fileReader(f, 'MAIN'));
     this.teacherfileList.forEach(f => this.fileReader(f, 'TEACHER'));
@@ -119,11 +119,17 @@ export class AppComponent implements OnInit {
 
   fileReader(files: any, type: string) {
     let fileName = '';
+    let moduleIndex = 0;
+    for (let index = 0; index < this.moduleList.length; index++) {
+      if(files.name.includes(this.moduleList[index].split('_')[1])) {
+        moduleIndex = index;
+      }
+    }
     if (type == 'TEACHER') {
-      const index = parseInt(files.name.substring(1, 3));
+      const index = parseInt(files.name.substring(1, 3)) + moduleIndex * this.defaultData.teacherFileOrder.length;
       fileName = this.teacherFile[index - 1];
     } else if (type == 'STUDENT') {
-      const index = parseInt(files.name.substring(1, 3));
+      const index = parseInt(files.name.substring(1, 3)) + moduleIndex * this.defaultData.studentResponseOrder.length;
       fileName = this.studentResponse[index - 1];
     }
     const file = { ...files };
@@ -266,40 +272,36 @@ export class AppComponent implements OnInit {
               data[moduleIndex + '과학이수'] = temp['이수여부'];
               data[moduleIndex + '라라개요'] = temp['교과 수업 개요'];
               data[moduleIndex + '라라교사'] = temp['교과 교사 측정'];
+            } else if (temp['작성교사']?.includes('열음')) {
+              data[moduleIndex + '과학이수'] = temp['이수여부'];
+              data[moduleIndex + '열음개요'] = temp['교과 수업 개요'];
+              data[moduleIndex + '열음교사'] = temp['교과 교사 측정'];
             }
           }
 
-        } else if (sheetName == TeacherSheetName['V.lab']) {
+        } else if (sheetName == TeacherSheetName['솔루션랩']) {
           const sheet3: RabSheet[] = this.teacherData[sheetName];
           const sheet3Data = sheet3.filter(x => x['닉네임'] == nickname && x['이름'] == name).shift();
           if (sheet3Data) {
-            data['V.lab개요'] = sheet3Data['교과 수업 개요'];
-            data['V.lab교사'] = sheet3Data['교과 교사 측정'];
-            data['V.lab이수'] = sheet3Data['이수여부'];
+            data[sheetName + '개요'] = sheet3Data['교과 수업 개요'];
+            data[sheetName + '교사'] = sheet3Data['교과 교사 측정'];
+            data[sheetName + '이수'] = sheet3Data['이수여부'].trim();
           }
-        } else if (sheetName == TeacherSheetName['M.lab']) {
+        } else if (sheetName == TeacherSheetName['디자인랩']) {
           const sheet4: RabSheet[] = this.teacherData[sheetName];
           const sheet4Data = sheet4.filter(x => x['닉네임'] == nickname && x['이름'] == name).shift();
           if (sheet4Data) {
-            data['M.lab개요'] = sheet4Data['교과 수업 개요'];
-            data['M.lab교사'] = sheet4Data['교과 교사 측정'];
-            data['M.lab이수'] = sheet4Data['이수여부'];
+            data[sheetName + '개요'] = sheet4Data['교과 수업 개요'];
+            data[sheetName + '교사'] = sheet4Data['교과 교사 측정'];
+            data[sheetName + '이수'] = sheet4Data['이수여부'].trim();
           }
-        } else if (sheetName == TeacherSheetName['마케팅랩']) {
+        } else if (sheetName == TeacherSheetName['글말랩']) {
           const sheet9: RabSheet[] = this.teacherData[sheetName];
           const sheet9Data = sheet9.filter(x => x['닉네임'] == nickname && x['이름'] == name).shift();
           if (sheet9Data) {
-            data['마케팅랩개요'] = sheet9Data['교과 수업 개요'];
-            data['마케팅랩교사'] = sheet9Data['교과 교사 측정'];
-            data['마케팅랩이수'] = sheet9Data['이수여부'];
-          }
-        } else if (sheetName == TeacherSheetName['코딩랩']) {
-          const sheet10: RabSheet[] = this.teacherData[sheetName];
-          const sheet10Data = sheet10.filter(x => x['닉네임'] == nickname && x['이름'] == name).shift();
-          if (sheet10Data) {
-            data['코딩랩개요'] = sheet10Data['교과 수업 개요'];
-            data['코딩랩교사'] = sheet10Data['교과 교사 측정'];
-            data['코딩랩이수'] = sheet10Data['이수여부'];
+            data[sheetName + '개요'] = sheet9Data['교과 수업 개요'];
+            data[sheetName + '교사'] = sheet9Data['교과 교사 측정'];
+            data[sheetName + '이수'] = sheet9Data['이수여부'].trim();
           }
         } else if (sheetName == TeacherSheetName['체육']) {
           const sheet5: GymSheet[] = this.teacherData[sheetName];
@@ -379,15 +381,34 @@ export class AppComponent implements OnInit {
           if (sheet1Data.length > 0) {
             for (let p = 0; p < sheet1Data.length; p++) {
               const element = sheet1Data[p];
-              const moduleIndex = element.moduleIndex;
-              if (element['알파랩'] == '마케팅랩') {
-                data['마케팅랩학생'] = element['알파랩학생1'];
-              } else if (element['알파랩'] == '코딩랩') {
-                data['코딩랩학생'] = element['알파랩학생2'];
-              } else if (element['알파랩'] == 'V.lab') {
-                data['V.lab학생'] = element['알파랩학생1'];
-              } else if (element['알파랩'] == 'M.lab') {
-                data['M.lab학생'] = element['알파랩학생2'];
+              if (element['알파랩'] == '솔루션랩') {
+                data['솔루션랩학생'] = element['알파랩학생1'];
+              } else if (element['알파랩'] == '디자인랩') {
+                data['디자인랩학생'] = element['알파랩학생2'];
+              } else if (element['알파랩'] == '글/말랩') {
+                data['글말랩학생'] = element['알파랩학생2'];
+              } 
+            }
+          }
+        } else if(sheet.includes('문화')) {
+          const sheet1: any[] = this.studentData[sheet];
+          if(sheet1) {
+            const sheet1Data = sheet1.filter(x => x['닉네임'] == nickname && x['이름'] == name);
+            if (sheet1Data.length > 0) {
+              for (let p = 0; p < sheet1Data.length; p++) {
+                const element = sheet1Data[p];
+                data['학생문화활동'] = element['학생문화활동'];
+                data['학생회활동'] = element['학생회활동'];
+                data['학생회느낀점'] = element['학생회느낀점'];
+                data['동아리1'] = element['동아리1'];
+                data['동아리활동1'] = element['동아리활동1'];
+                data['동아리느낀점1'] = element['동아리느낀점1'];
+                data['동아리2'] = element['동아리2'];
+                data['동아리활동2'] = element['동아리활동2'];
+                data['동아리느낀점2'] = element['동아리느낀점2'];
+                data['동아리3'] = element['동아리3'];
+                data['동아리활동3'] = element['동아리활동3'];
+                data['동아리느낀점3'] = element['동아리느낀점3'];
               }
             }
           }
@@ -398,6 +419,7 @@ export class AppComponent implements OnInit {
             for (let p = 0; p < sheet1Data.length; p++) {
               const element = sheet1Data[p];
               const moduleIndex = element.moduleIndex;
+              data[moduleIndex + '열음학생'] = element['열음'];
               data[moduleIndex + '라라학생'] = element['라라'];
               data[moduleIndex + '수선학생'] = element['수선'];
               data[moduleIndex + '도령학생'] = element['도령'];
