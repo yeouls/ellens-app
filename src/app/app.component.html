@@ -1,15 +1,23 @@
-<div class="main">
-    <div class="header">
-        <span style="padding: 5px;">생성할 모듈</span>
-        <input nz-input placeholder="small size" nzSize="small" [(ngModel)]="current_module" />
-        <button nz-button nzType="primary" (click)="createModal()">파일 업로드</button>
-        <button nz-button (click)="changeEvent()" [disabled]="!disableCreate()">데이터 생성</button>
-        <button nz-button (click)="exportexcel()" [disabled]="rowData.length == 0">Export to Excel</button>
-        <button nz-button (click)="exportcsv()" [disabled]="rowData.length == 0">Export to CSV</button>
-    </div>
-    <div class="content">
-        <ag-grid-angular style="width: 100%; height: 100%" class="ag-theme-alpine" [columnDefs]="columnDefs"
-            [defaultColDef]="defaultColDef" [rowData]="rowData" [rowSelection]="'multiple'" [animateRows]="true" (gridReady)="onGridReady($event)">
-        </ag-grid-angular>
-    </div>
-</div>
+<nz-layout style="height: 100%;width: 100%;">
+    <nz-sider nzCollapsible nzWidth="200px">
+      <div class="logo"><span nz-icon nzType="aliwangwang" nzTheme="outline"></span></div>
+      <ul nz-menu nzTheme="dark" nzMode="inline" (click)="onMenuClick($event)">
+        <!-- <li nz-menu-item>
+          <span nz-icon nzType="setting" nzTheme="outline"></span>
+          <span>처음 설정</span>
+        </li> -->
+        <li nz-menu-item>
+            <span nz-icon nzType="file"></span>
+          <span>결과 미리보기</span>
+        </li>
+      </ul>
+    </nz-sider>
+    <nz-layout>  
+      <nz-content>
+        <div class="inner-content">
+            <app-result-page *ngIf="isResult"></app-result-page>
+            <app-commonfile-setting *ngIf="isSetting"></app-commonfile-setting>
+        </div>
+      </nz-content>
+    </nz-layout>
+  </nz-layout>
